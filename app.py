@@ -3,8 +3,8 @@ from tkinter import filedialog, simpledialog, messagebox
 from PIL import Image, ImageTk, ImageDraw, ImageFont
 import math
 
-CANVAS_WIDTH = 900
-CANVAS_HEIGHT = 600
+CANVAS_WIDTH = 700
+CANVAS_HEIGHT = 500
 
 class ImageAnnotator:
     def __init__(self, root):
@@ -41,10 +41,10 @@ class ImageAnnotator:
         tk.Button(toolbar, text="Measure", command=lambda: self.set_tool("measure")).pack(side=tk.LEFT)
         tk.Button(toolbar, text="Undo", command=self.undo).pack(side=tk.LEFT)
         tk.Button(toolbar, text="Redo", command=self.redo).pack(side=tk.LEFT)
-        tk.Button(toolbar, text="Reset", command=self.reset).pack(side=tk.LEFT)
-        tk.Button(toolbar, text="Save image", command=self.save_image).pack(side=tk.LEFT)
+        tk.Button(toolbar, text="Reset", command=self.reset).pack(side=tk.RIGHT)
+        tk.Button(toolbar, text="Save image", command=self.save_image).pack(side=tk.RIGHT)
 
-        self.canvas = tk.Canvas(self.root, width=CANVAS_WIDTH, height=CANVAS_HEIGHT, bg="gray")
+        self.canvas = tk.Canvas(self.root, width=CANVAS_WIDTH, height=CANVAS_HEIGHT, bg="white")
         self.canvas.pack()
         self.canvas.bind("<ButtonPress-1>", self.on_mouse_down)
         self.canvas.bind("<B1-Motion>", self.on_mouse_drag)
@@ -74,7 +74,6 @@ class ImageAnnotator:
         if not self.image:
             return
 
-        # Scale image to fit canvas
         img_w, img_h = self.image.size
         scale_w = CANVAS_WIDTH / img_w
         scale_h = CANVAS_HEIGHT / img_h
@@ -101,7 +100,7 @@ class ImageAnnotator:
             text = simpledialog.askstring("Text", "Enter label:")
             if text:
                 self.save_state()
-                font = ImageFont.load_default()
+                font = ImageFont.truetype("arial.ttf", size=16)
                 self.draw.text((ix, iy), text, fill="red", font=font)
                 self.refresh_canvas()
 
